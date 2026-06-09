@@ -252,7 +252,34 @@
             background: rgba(0, 212, 255, 0.1);
             transform: translateY(-3px);
         }
-
+@media (max-width: 992px) {
+    .hero {
+        grid-template-columns: 1fr;
+    }
+    
+    .about-content, .contact-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero-content {
+        order: 2;
+        text-align: center;
+    }
+    
+    .hero-image {
+        order: 1;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    
+    .subtitle {
+        max-width: 100%;
+    }
+    
+    .cta-buttons {
+        justify-content: center;
+    }
+}
         /* ============ ABOUT SECTION ============ */
         section {
             padding: 6rem 2rem;
