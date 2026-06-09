@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTT Platforms Data Analysis | Shamshunnisa M</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff6b6b;
+            --secondary: #794afa;
+            --dark: #2b2d42;
+            --light: #f8f9fa;
+            --netflix: #e50914;
+            --amazon: #00a8e1;
+            --disney: #113ccf;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--dark);
+            background-color: var(--light);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        /* Header Styles */
+        .project-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .project-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+        
+        .project-meta {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        /* Section Styles */
+        .project-section {
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: var(--secondary);
+        }
+        
+        /* Overview Cards */
+        .overview-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .overview-card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .overview-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .overview-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        /* Steps Timeline */
+        .steps-timeline {
+            position: relative;
+            padding-left: 50px;
+            margin: 40px 0;
+        }
+        
+        .step {
+            position: relative;
+            padding-bottom: 40px;
+        }
+        
+        .step:last-child {
+            padding-bottom: 0;
+        }
+        
+        .step-number {
+            position: absolute;
+            left: -50px;
+            top: 0;
+            width: 36px;
+            height: 36px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .step-content {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        
+        .step-content h4 {
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+        
+        .step-connector {
+            position: absolute;
+            left: -32px;
+            top: 36px;
+            bottom: 0;
+            width: 2px;
+            background: #ddd;
+        }
+        
+        /* Insights Section */
+        .platform-insights {
+            margin: 50px 0;
+        }
+        
+        .platform-card {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-top: 4px solid;
+        }
+        
+        .netflix-card {
+            border-color: var(--netflix);
+        }
+        
+        .amazon-card {
+            border-color: var(--amazon);
+        }
+        
+        .disney-card {
+            border-color: var(--disney);
+        }
+        
+        .platform-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .platform-logo {
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        .platform-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+        }
+        
+        .insight-list {
+            list-style: none;
+        }
+        
+        .insight-list li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 15px;
+        }
+        
+        .insight-list li:before {
+            content: '▹';
+            position: absolute;
+            left: 0;
+            color: var(--secondary);
+        }
+        
+        /* Dashboard Preview */
+        .dashboard-preview {
+            text-align: center;
+            margin: 60px 0;
+        }
+        
+        .dashboard-image {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid #eee;
+        }
+        
+        .dashboard-slideshow {
+            max-width: 1000px;
+            margin: 40px auto;
+            position: relative;
+        }
+        
+        .slideshow-container {
+            position: relative;
+            height: 500px;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+        }
+        
+        .slide.active {
+            opacity: 1;
+        }
+        
+        .slide img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+        }
+        
+        .slide-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .slideshow-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 15px;
+        }
+        
+        .slideshow-nav button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .slideshow-nav button:hover {
+            background: var(--secondary);
+            transform: scale(1.1);
+        }
+        
+        .thumbnail-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .thumbnail {
+            width: 80px;
+            height: 60px;
+            border-radius: 5px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .thumbnail:hover, .thumbnail.active {
+            opacity: 1;
+            border-color: var(--primary);
+        }
+        
+        @media (max-width: 768px) {
+            .slideshow-container {
+                height: 300px;
+            }
+            
+            .thumbnail {
+                width: 60px;
+                height: 45px;
+            }
+        }
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .project-title {
+                font-size: 2.2rem;
+            }
+            
+            .project-meta {
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .steps-timeline {
+                padding-left: 40px;
+            }
+            
+            .step-number {
+                left: -40px;
+                width: 30px;
+                height: 30px;
+                font-size: 0.9rem;
+            }
+            
+            .step-connector {
+                left: -26px;
+            }
+
+            /* Temporary debug styles */
+            .slide, .thumbnail {
+                background-color: rgba(255,0,0,0.1);
+                border: 2px dashed red;
+            }
+
+            .slide img, .thumbnail img {
+                border: 2px solid blue;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="project-header">
+            <h1 class="project-title">OTT Platforms Data Analysis</h1>
+            <div class="project-meta">
+                <span>Shamshunnisa M</span>
+                <span>Power BI Project</span>
+                <span id="current-date"></span>
+            </div>
+        </header>
+        
+        <section class="project-section">
+            <h2 class="section-title">Project Overview</h2>
+            
+            <div class="overview-cards">
+                <div class="overview-card">
+                    <h3>Objective</h3>
+                    <p>To analyze all aspects of different OTT platforms and their growth patterns, content distribution, and viewer preferences.</p>
+                </div>
+                
+                <div class="overview-card">
+                    <h3>Dataset</h3>
+                    <p>Collected data for 3 major platforms (Netflix, Amazon Prime, Disney+ Hotstar) from Kaggle & GitHub in CSV format with 7-8 key metrics per dataset.</p>
+                </div>
+                
+                <div class="overview-card">
+                    <h3>Tools Used</h3>
+                    <p>Microsoft Power BI for data transformation, visualization, and dashboard creation.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section class="project-section">
+            <h2 class="section-title">Methodology</h2>
+            
+            <div class="steps-timeline">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-connector"></div>
+                    <div class="step-content">
+                        <h4>Data Import</h4>
+                        <p>Downloaded datasets from Kaggle & GitHub references and imported CSV files into Power BI for analysis.</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-connector"></div>
+                    <div class="step-content">
+                        <h4>Data Transformation</h4>
+                        <ul>
+                            <li>Cleaned all null values and handled missing data</li>
+                            <li>Added calculated columns for enhanced analysis</li>
+                            <li>Removed duplicate entries</li>
+                            <li>Standardized formats across datasets</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-connector"></div>
+                    <div class="step-content">
+                        <h4>Visualization</h4>
+                        <ul>
+                            <li>Pie charts for content distribution</li>
+                            <li>Stacked bar charts for comparative analysis</li>
+                            <li>Donut charts for rating breakdowns</li>
+                            <li>Flash cards for key metrics</li>
+                            <li>Slicers for interactive filtering</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-connector"></div>
+                    <div class="step-content">
+                        <h4>Dashboard Design</h4>
+                        <ul>
+                            <li>Organized visualizations in logical sequence</li>
+                            <li>Added explanatory cards for key numbers</li>
+                            <li>Implemented cross-filtering functionality</li>
+                            <li>Ensured mobile-responsive layout</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="project-section">
+            <h2 class="section-title">Key Insights</h2>
+            
+            <div class="platform-insights">
+                <div class="platform-card netflix-card">
+                    <div class="platform-header">
+                        <div class="platform-logo" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg')"></div>
+                        <h3 class="platform-title">Netflix</h3>
+                    </div>
+                    <ul class="insight-list">
+                        <li>15K content pieces dominated by movies (12K), with series gaining awards momentum post-2016</li>
+                        <li>Movies have won more awards overall despite series growth</li>
+                        <li>Viewer preference leans toward longer movies</li>
+                        <li>"R" ratings dominate at 45%, reflecting mature audience focus</li>
+                    </ul>
+                </div>
+                
+                <div class="platform-card amazon-card">
+                    <div class="platform-header">
+                        <div class="platform-logo" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/1/11/Amazon_Prime_Video_logo.svg')"></div>
+                        <h3 class="platform-title">Amazon Prime</h3>
+                    </div>
+                    <ul class="insight-list">
+                        <li>Hosts 9,684 shows with movies (7,814) as majority content</li>
+                        <li>U.S. dominates content distribution at 93.06%</li>
+                        <li>Viewer ratings lean toward 13+ (29.59%)</li>
+                        <li>Indian content remains small at just 2.61% of total</li>
+                    </ul>
+                </div>
+                
+                <div class="platform-card disney-card">
+                    <div class="platform-header">
+                        <div class="platform-logo" style="background-image: url('https://upload.wikimedia.org/wikipedia/commons/3/3e/Disney%2B_logo.svg')"></div>
+                        <h3 class="platform-title">Disney+ Hotstar</h3>
+                    </div>
+                    <ul class="insight-list">
+                        <li>1,450 shows with movies (1,052) as primary content</li>
+                        <li>Solid average IMDb score of 6.8 across content</li>
+                        <li>Focus on diverse content genres and family-friendly programming</li>
+                        <li>TV-14 and TV-PG ratings dominate the platform</li>
+                        <li>Notable yearly content additions from 2019 to 2021</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+    </div>
+
+    <section class="project-section">
+        <h2 class="section-title">Dashboard Preview</h2>
+        
+        <div class="dashboard-slideshow">
+            <div class="slideshow-container">
+                <div class="slide active">
+                    <img src="../Images/OTT/Netflix.png" alt="Netflix Dashboard">
+                    <div class="slide-caption">Netflix Content Analysis</div>
+                </div>
+                <div class="slide">
+                    <img src="../Images/OTT/Amazon.png" alt="Amazon Prime Dashboard">
+                    <div class="slide-caption">Amazon Prime Video Metrics</div>
+                </div>
+                <div class="slide">
+                    <img src="../Images/OTT/Disney.png" alt="Disney+ Hotstar Dashboard">
+                    <div class="slide-caption">Disney+ Hotstar Insights</div>
+                </div>
+            </div>
+            
+            <div class="thumbnail-container">
+                <img src="../Images/OTT/Netflix.png" alt="Netflix Thumbnail" class="thumbnail active" data-index="0">
+                <img src="../Images/OTT/Amazon.png" alt="Amazon Thumbnail" class="thumbnail" data-index="1">
+                <img src="../Images/OTT/Disney.png" alt="Disney Thumbnail" class="thumbnail" data-index="2">
+            </div>
+            
+            <div class="slideshow-nav">
+                <button class="prev-btn">❮</button>
+                <button class="next-btn">❯</button>
+        </div>
+    </section>
+
+    
+    <script>
+        // Set current date
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        });
+        
+        // Add animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('.overview-card, .step-content, .platform-card').forEach(card => {
+                card.style.opacity = 0;
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'all 0.6s ease';
+                observer.observe(card);
+            });
+        });
+     // Slideshow Functionality
+     document.addEventListener('DOMContentLoaded', function() {
+         const slides = document.querySelectorAll('.slide');
+         const thumbnails = document.querySelectorAll('.thumbnail');
+         const prevBtn = document.querySelector('.prev-btn');
+         const nextBtn = document.querySelector('.next-btn');
+         let currentSlide = 0;
+         
+         // Show current slide
+         function showSlide(index) {
+             slides.forEach(slide => slide.classList.remove('active'));
+             thumbnails.forEach(thumb => thumb.classList.remove('active'));
+             
+             slides[index].classList.add('active');
+             thumbnails[index].classList.add('active');
+             currentSlide = index;
+         }
+         
+         // Next slide
+         function nextSlide() {
+             currentSlide = (currentSlide + 1) % slides.length;
+             showSlide(currentSlide);
+         }
+         
+         // Previous slide
+         function prevSlide() {
+             currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+             showSlide(currentSlide);
+         }
+         
+         // Thumbnail click
+         thumbnails.forEach(thumb => {
+             thumb.addEventListener('click', function() {
+                 showSlide(parseInt(this.dataset.index));
+             });
+         });
+         
+         // Button events
+         nextBtn.addEventListener('click', nextSlide);
+         prevBtn.addEventListener('click', prevSlide);
+         
+         // Keyboard navigation
+         document.addEventListener('keydown', function(e) {
+             if (e.key === 'ArrowRight') nextSlide();
+             if (e.key === 'ArrowLeft') prevSlide();
+         });
+         
+         // Auto-rotate (optional)
+         // setInterval(nextSlide, 5000);
+     });
+    </script>
+</body>
+</html>
